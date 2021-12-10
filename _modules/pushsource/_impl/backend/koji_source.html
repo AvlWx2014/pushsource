@@ -36,7 +36,6 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
-<span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
 <span class="kn">from</span> <span class="nn">six.moves.queue</span> <span class="kn">import</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">Empty</span>
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
@@ -55,7 +54,7 @@
     <span class="n">ContainerImagePushItem</span><span class="p">,</span>
     <span class="n">SourceContainerImagePushItem</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">list_argument</span><span class="p">,</span> <span class="n">try_int</span>
+<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">list_argument</span><span class="p">,</span> <span class="n">try_int</span><span class="p">,</span> <span class="n">as_completed_with_timeout_reset</span>
 <span class="kn">from</span> <span class="nn">.modulemd</span> <span class="kn">import</span> <span class="n">Module</span>
 <span class="kn">from</span> <span class="nn">.koji_containers</span> <span class="kn">import</span> <span class="n">ContainerArchiveHelper</span><span class="p">,</span> <span class="n">MIME_TYPE_MANIFEST_LIST</span>
 
@@ -713,7 +712,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_modulemd_futures</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpm_futures</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container_futures</span><span class="p">()</span>
         <span class="p">)</span>
 
-        <span class="n">completed_fs</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">push_items_fs</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">)</span>
+        <span class="n">completed_fs</span> <span class="o">=</span> <span class="n">as_completed_with_timeout_reset</span><span class="p">(</span>
+            <span class="n">push_items_fs</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">completed_fs</span><span class="p">:</span>
             <span class="c1"># If an exception occurred, this is where it will be raised.</span>
             <span class="k">for</span> <span class="n">pushitem</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">result</span><span class="p">():</span>
@@ -749,6 +750,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../sources/base.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../sources/staged.html">Source: staged</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../sources/koji.html">Source: koji</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sources/registry.html">Source: registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../sources/errata.html">Source: errata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../model/base.html">Push items</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../model/files.html">Push items: file</a></li>
@@ -809,7 +811,7 @@
       &copy;2020, Red Hat.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -105,9 +105,9 @@ mock:
 For detailed information, see the API reference of the associated class.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 5%" />
-<col style="width: 45%" />
-<col style="width: 20%" />
+<col style="width: 6%" />
+<col style="width: 44%" />
+<col style="width: 21%" />
 <col style="width: 30%" />
 </colgroup>
 <thead>
@@ -130,7 +130,12 @@ from a koji server</p></td>
 <td><p>Obtain RPMs, files, AMIs and other content from
 locally mounted filesystem</p></td>
 </tr>
-<tr class="row-even"><td><p>errata</p></td>
+<tr class="row-even"><td><p>registry</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">registry:registry.access.redhat.com/ubi8/ubi:latest</span></code></p></td>
+<td><p><a class="reference internal" href="sources/registry.html#pushsource.RegistrySource" title="pushsource.RegistrySource"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrySource</span></code></a></p></td>
+<td><p>Obtain images from a container image registry</p></td>
+</tr>
+<tr class="row-odd"><td><p>errata</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">errata:https://errata.example.com?errata=RHBA-2020:1234</span></code></p></td>
 <td><p><a class="reference internal" href="sources/errata.html#pushsource.ErrataSource" title="pushsource.ErrataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">ErrataSource</span></code></a></p></td>
 <td><p>Obtain RPMs, container images and advisory
@@ -148,7 +153,7 @@ depending on the type of content loaded by the source.  For example, RPMs will b
 yielded as instances of <a class="reference internal" href="model/rpm.html#pushsource.RpmPushItem" title="pushsource.RpmPushItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RpmPushItem</span></code></a> and errata will be yielded
 as instances of <a class="reference internal" href="model/errata.html#pushsource.ErratumPushItem" title="pushsource.ErratumPushItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ErratumPushItem</span></code></a>.</p>
 <p>Commonly, different kinds of processing will be needed for different kinds of push items.
-In this case, it’s recommended to use <a class="reference external" href="https://docs.python.org/3/library/functions.html#isinstance" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">isinstance()</span></code></a> checks to dispatch each push
+In this case, it’s recommended to use <a class="reference external" href="https://docs.python.org/3/library/functions.html#isinstance" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">isinstance()</span></code></a> checks to dispatch each push
 item appropriately.</p>
 <p>Consider tolerating push items of an unknown type (perhaps with a warning). This will ensure
 your code is forwards-compatible with later versions of this library, which may add new types
@@ -262,6 +267,7 @@ pre-filled.</p>
 <li class="toctree-l1"><a class="reference internal" href="sources/base.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sources/staged.html">Source: staged</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sources/koji.html">Source: koji</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/registry.html">Source: registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sources/errata.html">Source: errata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model/base.html">Push items</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model/files.html">Push items: file</a></li>
@@ -322,7 +328,7 @@ pre-filled.</p>
       &copy;2020, Red Hat.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
